@@ -1,0 +1,1308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Threshold — We help teams make sense of complexity</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --white:    #FAFAF8;
+  --off:      #F3F2EF;
+  --light:    #E8E6E0;
+  --text:     #1A1A18;
+  --mid:      #6A6860;
+  --faint:    #A8A69E;
+  --green:    #2D5A3D;
+  --green-lt: rgba(45,90,61,0.08);
+  --accent:   #2D5A3D;
+  --rule:     #DDDBD4;
+  --display:  'Playfair Display', Georgia, serif;
+  --body:     'DM Sans', system-ui, sans-serif;
+}
+
+html { scroll-behavior: smooth; scroll-padding-top: 80px; }
+
+body {
+  background: var(--white);
+  color: var(--text);
+  font-family: var(--body);
+  font-size: 16px;
+  line-height: 1.7;
+  font-weight: 300;
+  overflow-x: hidden;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 3rem;
+  background: rgba(250,250,248,0.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--rule);
+}
+
+.nav-brand {
+  font-family: var(--display);
+  font-size: 1rem;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--text);
+  text-decoration: none;
+  letter-spacing: 0.01em;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2.5rem;
+  align-items: center;
+}
+
+.nav-links a {
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--mid);
+  text-decoration: none;
+  letter-spacing: 0.01em;
+  transition: color 0.15s;
+}
+
+.nav-links a:hover { color: var(--text); }
+
+.nav-cta {
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  color: var(--white) !important;
+  background: var(--green);
+  padding: 8px 18px;
+  border-radius: 100px;
+  transition: opacity 0.15s !important;
+}
+
+.nav-cta:hover { opacity: 0.85; color: var(--white) !important; }
+
+/* ── HERO ── */
+#hero {
+  min-height: 100vh;
+  padding: 120px 3rem 6rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  max-width: 1280px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.hero-tag {
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+/* Handmade underline via SVG */
+.hero-tag::before {
+  content: '';
+  display: inline-block;
+  width: 32px;
+  height: 1px;
+  background: var(--green);
+  opacity: 0.5;
+}
+
+.hero-title {
+  font-family: var(--display);
+  font-size: clamp(3rem, 7vw, 6.5rem);
+  font-weight: 400;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  max-width: 16ch;
+  margin-bottom: 2.5rem;
+  opacity: 0;
+  animation: rise 0.9s cubic-bezier(0.16,1,0.3,1) 0.1s forwards;
+}
+
+.hero-title em {
+  font-style: italic;
+  color: var(--green);
+}
+
+.hero-bottom {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 4rem;
+  opacity: 0;
+  animation: rise 0.9s cubic-bezier(0.16,1,0.3,1) 0.25s forwards;
+}
+
+.hero-body {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--mid);
+  max-width: 48ch;
+  font-weight: 300;
+}
+
+.hero-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  align-items: flex-start;
+  flex-shrink: 0;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  border-radius: 100px;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.btn-dark {
+  background: var(--text);
+  color: var(--white);
+  padding: 12px 24px;
+}
+
+.btn-dark:hover { background: #333; }
+
+.btn-ghost {
+  color: var(--mid);
+  padding: 12px 0;
+  font-weight: 400;
+  font-size: 13px;
+  border-bottom: 1px solid var(--rule);
+  border-radius: 0;
+}
+
+.btn-ghost:hover { color: var(--text); border-color: var(--text); }
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── SHARED ── */
+.wrap { max-width: 1280px; margin: 0 auto; padding: 0 3rem; }
+
+.eyebrow {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin-bottom: 1.25rem;
+}
+
+.h2 {
+  font-family: var(--display);
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  margin-bottom: 1.5rem;
+}
+
+.h2 em { font-style: italic; color: var(--green); }
+
+.body-lg {
+  font-size: 1.05rem;
+  line-height: 1.85;
+  color: var(--mid);
+  font-weight: 300;
+}
+
+/* handmade SVG divider */
+.sketch-rule {
+  width: 100%;
+  height: 16px;
+  overflow: visible;
+  margin: 0;
+  display: block;
+}
+
+/* ── PROBLEM ── */
+#problem {
+  padding: 7rem 0;
+  border-top: 1px solid var(--rule);
+}
+
+.problem-inner {
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+  gap: 8rem;
+  align-items: start;
+}
+
+.problem-body { color: var(--mid); font-weight: 300; line-height: 1.85; margin-bottom: 1.25rem; }
+.problem-body strong { color: var(--text); font-weight: 500; }
+
+.pull-quote {
+  margin: 2.5rem 0;
+  padding-left: 1.5rem;
+  position: relative;
+  font-family: var(--display);
+  font-size: 1.35rem;
+  font-style: italic;
+  line-height: 1.5;
+  color: var(--text);
+}
+
+.pull-quote::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 2px;
+  background: var(--green);
+  opacity: 0.4;
+  /* Slightly imperfect — handmade feel */
+  clip-path: polygon(0 2%, 100% 0%, 98% 100%, 2% 98%);
+}
+
+/* ── THRESHOLD MOMENTS ── */
+#moments {
+  padding: 7rem 0;
+  background: var(--off);
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+
+.moments-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  margin-top: 3.5rem;
+}
+
+.moment-card {
+  background: var(--white);
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  padding: 1.75rem 1.5rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.moment-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 1.5rem; right: 1.5rem;
+  height: 2px;
+  background: var(--green);
+  opacity: 0.2;
+  border-radius: 2px;
+}
+
+.moment-card p {
+  font-family: var(--display);
+  font-size: 1.1rem;
+  font-style: italic;
+  font-weight: 400;
+  line-height: 1.35;
+  color: var(--text);
+}
+
+.moments-coda {
+  margin-top: 3rem;
+  font-family: var(--display);
+  font-size: 1.25rem;
+  font-style: italic;
+  color: var(--mid);
+  max-width: 56ch;
+  line-height: 1.6;
+}
+
+/* ── WHAT ── */
+#what { padding: 7rem 0; border-top: 1px solid var(--rule); }
+
+.what-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3rem;
+  margin-top: 4rem;
+}
+
+.what-item {
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--rule);
+}
+
+.what-num {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--faint);
+  margin-bottom: 0.75rem;
+}
+
+.what-item h3 {
+  font-family: var(--display);
+  font-size: 1.2rem;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--text);
+  margin-bottom: 0.75rem;
+  line-height: 1.3;
+}
+
+.what-item p { font-size: 0.92rem; line-height: 1.8; color: var(--mid); }
+
+/* ── PATTERNS ── */
+#patterns {
+  padding: 7rem 0;
+  background: var(--off);
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+}
+
+.patterns-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6rem;
+  margin-bottom: 4rem;
+  align-items: end;
+}
+
+.patterns-intro {
+  font-size: 0.95rem;
+  line-height: 1.85;
+  color: var(--mid);
+}
+
+.patterns-intro a {
+  color: var(--green);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(45,90,61,0.3);
+}
+
+.theme-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin-bottom: 1.5rem;
+  margin-top: 3rem;
+}
+
+.patterns-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.pattern-card {
+  background: var(--white);
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  padding: 1.5rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.pattern-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.07);
+}
+
+.card-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 100px;
+  margin-bottom: 1rem;
+}
+
+.card-badge.block {
+  background: rgba(180,60,40,0.08);
+  color: #8B2E1A;
+}
+
+.card-badge.unblock {
+  background: var(--green-lt);
+  color: var(--green);
+}
+
+.card-badge::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  flex-shrink: 0;
+}
+
+.card-name {
+  font-family: var(--display);
+  font-size: 1.15rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--text);
+  line-height: 1.25;
+  margin-bottom: 0.5rem;
+}
+
+.card-tagline {
+  font-size: 0.82rem;
+  line-height: 1.65;
+  color: var(--mid);
+}
+
+.card-detail {
+  display: none;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--rule);
+  font-size: 0.8rem;
+  line-height: 1.7;
+  color: var(--mid);
+}
+
+.pattern-card:hover .card-detail { display: block; }
+
+.patterns-cta {
+  margin-top: 3.5rem;
+  padding-top: 2.5rem;
+  border-top: 1px solid var(--rule);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 3rem;
+}
+
+.patterns-cta p {
+  font-family: var(--display);
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--mid);
+  max-width: 40ch;
+  line-height: 1.5;
+}
+
+/* ── DIAGNOSTIC ── */
+#diagnostic {
+  background: var(--text);
+  padding: 7rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+#diagnostic::before {
+  content: '';
+  position: absolute;
+  top: 0; right: 0;
+  width: 40%;
+  height: 100%;
+  background: radial-gradient(ellipse at top right, rgba(45,90,61,0.3) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.diag-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8rem;
+  align-items: center;
+}
+
+.diag-tag {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  margin-bottom: 1.25rem;
+}
+
+.diag-title {
+  font-family: var(--display);
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 400;
+  font-style: italic;
+  color: #fff;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.5rem;
+}
+
+.diag-sub {
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  margin-bottom: 1.5rem;
+}
+
+.diag-body {
+  font-size: 1rem;
+  line-height: 1.85;
+  color: rgba(255,255,255,0.55);
+  margin-bottom: 1rem;
+  font-weight: 300;
+}
+
+.diag-note {
+  font-family: var(--display);
+  font-size: 1.1rem;
+  font-style: italic;
+  color: rgba(255,255,255,0.4);
+  margin-bottom: 2.5rem;
+  line-height: 1.5;
+}
+
+.btn-white {
+  background: #fff;
+  color: var(--text);
+  padding: 13px 26px;
+  border-radius: 100px;
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  display: inline-block;
+  transition: opacity 0.15s;
+}
+
+.btn-white:hover { opacity: 0.88; }
+
+.diag-steps {
+  display: flex;
+  flex-direction: column;
+}
+
+.diag-step {
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-start;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+.diag-step:first-child { padding-top: 0; }
+.diag-step:last-child { border-bottom: none; }
+
+.step-n {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: rgba(255,255,255,0.25);
+  flex-shrink: 0;
+  padding-top: 3px;
+  width: 16px;
+}
+
+.step-body {
+  font-size: 0.92rem;
+  line-height: 1.7;
+  color: rgba(255,255,255,0.55);
+  font-weight: 300;
+}
+
+.step-body strong { color: rgba(255,255,255,0.85); font-weight: 500; }
+
+/* ── PROCESS ── */
+#process { padding: 7rem 0; border-top: 1px solid var(--rule); }
+
+.process-intro { max-width: 56ch; margin-bottom: 4rem; }
+.process-intro .body-lg { margin-bottom: 1rem; }
+.process-coda {
+  font-family: var(--display);
+  font-size: 1.25rem;
+  font-style: italic;
+  color: var(--mid);
+  line-height: 1.5;
+  margin-top: 1.5rem;
+}
+
+.process-steps {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.process-step {
+  padding: 2rem;
+  border-right: 1px solid var(--rule);
+}
+
+.process-step:last-child { border-right: none; }
+
+.step-phase {
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 1rem;
+}
+
+.step-title {
+  font-family: var(--display);
+  font-size: 1.1rem;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--text);
+  margin-bottom: 0.75rem;
+  line-height: 1.3;
+}
+
+.step-desc { font-size: 0.85rem; line-height: 1.75; color: var(--mid); }
+
+.process-outcomes {
+  margin-top: 2rem;
+  padding: 2rem;
+  background: var(--off);
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+}
+
+.outcomes-label {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin-bottom: 1.25rem;
+}
+
+.outcomes-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.outcome-item {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+
+.outcome-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--green);
+  flex-shrink: 0;
+  margin-top: 0.6rem;
+  opacity: 0.5;
+}
+
+.outcome-text { font-size: 0.88rem; line-height: 1.7; color: var(--mid); }
+
+/* ── CASES ── */
+#cases {
+  padding: 7rem 0;
+  border-top: 1px solid var(--rule);
+  background: var(--off);
+  border-bottom: 1px solid var(--rule);
+}
+
+.cases-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-top: 3.5rem;
+}
+
+.case-item {
+  background: var(--white);
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  padding: 2.5rem;
+}
+
+.case-sector {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--green);
+  margin-bottom: 1.25rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--rule);
+}
+
+.case-body { font-size: 0.92rem; line-height: 1.85; color: var(--mid); }
+.case-body p + p { margin-top: 0.85rem; }
+.case-body strong { color: var(--text); font-weight: 500; }
+
+/* ── FOR WHOM ── */
+#forwhom { padding: 7rem 0; border-top: 1px solid var(--rule); }
+
+.forwhom-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8rem;
+  align-items: start;
+}
+
+.forwhom-closing {
+  margin-top: 3rem;
+  padding: 1.75rem;
+  background: var(--off);
+  border-radius: 12px;
+  border: 1px solid var(--rule);
+}
+
+.forwhom-closing p {
+  font-family: var(--display);
+  font-size: 1.05rem;
+  font-style: italic;
+  line-height: 1.6;
+  color: var(--mid);
+}
+
+.forwhom-closing p + p { margin-top: 0.5rem; }
+
+.contact-link {
+  display: inline-block;
+  margin-top: 2rem;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--green);
+  text-decoration: none;
+  border-bottom: 1px solid rgba(45,90,61,0.3);
+  padding-bottom: 2px;
+  transition: border-color 0.15s;
+}
+
+.contact-link:hover { border-color: var(--green); }
+
+.forwhom-list { display: flex; flex-direction: column; }
+
+.forwhom-item {
+  padding: 1.5rem 0;
+  border-bottom: 1px solid var(--rule);
+}
+
+.forwhom-item:first-child { padding-top: 0; }
+
+.forwhom-item strong {
+  display: block;
+  font-family: var(--display);
+  font-size: 1.1rem;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--text);
+  margin-bottom: 0.35rem;
+}
+
+.forwhom-item p { font-size: 0.9rem; line-height: 1.7; color: var(--mid); }
+
+/* ── WHO WE ARE ── */
+#who {
+  padding: 7rem 0;
+  border-top: 1px solid var(--rule);
+  background: var(--off);
+  border-bottom: 1px solid var(--rule);
+}
+
+.who-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8rem;
+  align-items: start;
+}
+
+.who-body { color: var(--mid); line-height: 1.85; margin-bottom: 1rem; font-weight: 300; }
+
+.person {
+  padding: 1.75rem 0;
+  border-top: 1px solid var(--rule);
+}
+
+.person:last-child { border-bottom: 1px solid var(--rule); }
+
+.person-name {
+  font-family: var(--display);
+  font-size: 1.25rem;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--text);
+  margin-bottom: 0.2rem;
+}
+
+.person-role {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin-bottom: 0.85rem;
+}
+
+.person-bio { font-size: 0.88rem; line-height: 1.8; color: var(--mid); }
+
+.person-quote {
+  margin-top: 0.85rem;
+  padding-left: 1rem;
+  border-left: 2px solid var(--rule);
+  font-family: var(--display);
+  font-size: 0.95rem;
+  font-style: italic;
+  color: var(--green);
+  line-height: 1.5;
+  opacity: 0.8;
+}
+
+/* ── SSC ── */
+#ssc {
+  padding: 3.5rem 0;
+  border-top: 1px solid var(--rule);
+}
+
+.ssc-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4rem;
+}
+
+.ssc-text { font-size: 0.88rem; line-height: 1.8; color: var(--mid); max-width: 58ch; }
+.ssc-text strong { color: var(--text); font-weight: 500; }
+
+.ssc-link {
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--green);
+  text-decoration: none;
+  white-space: nowrap;
+  flex-shrink: 0;
+  border-bottom: 1px solid rgba(45,90,61,0.3);
+  padding-bottom: 2px;
+}
+
+/* ── FOOTER ── */
+footer {
+  padding: 1.75rem 0;
+  border-top: 1px solid var(--rule);
+}
+
+.footer-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.footer-brand {
+  font-family: var(--display);
+  font-size: 0.95rem;
+  font-style: italic;
+  color: var(--mid);
+}
+
+.footer-copy { font-size: 12px; color: var(--faint); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 960px) {
+  nav { padding: 0 1.5rem; }
+  .nav-links { display: none; }
+  .wrap { padding: 0 1.5rem; }
+  #hero { padding: 100px 1.5rem 4rem; }
+  .hero-bottom { flex-direction: column; align-items: flex-start; gap: 2rem; }
+  .problem-inner, .who-inner, .forwhom-inner, .diag-wrap { grid-template-columns: 1fr; gap: 3rem; }
+  .what-grid, .patterns-grid, .cases-grid, .moments-grid { grid-template-columns: 1fr; }
+  .patterns-header { grid-template-columns: 1fr; gap: 2rem; }
+  .patterns-cta { flex-direction: column; align-items: flex-start; }
+  .process-steps { grid-template-columns: 1fr 1fr; }
+  .outcomes-list { grid-template-columns: 1fr; }
+  .ssc-inner { flex-direction: column; align-items: flex-start; gap: 1.5rem; }
+  .footer-inner { flex-direction: column; gap: 0.5rem; text-align: center; }
+  .moments-grid { grid-template-columns: 1fr 1fr; }
+  #problem, #moments, #what, #patterns, #diagnostic, #process, #cases, #forwhom, #who, #ssc { padding: 4rem 0; }
+}
+
+@media (max-width: 600px) {
+  .process-steps { grid-template-columns: 1fr; }
+  .moments-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-brand">the threshold</a>
+  <div class="nav-links">
+    <a href="#problem">The problem</a>
+    <a href="#patterns">Patterns</a>
+    <a href="#process">Our process</a>
+    <a href="#who">Who we are</a>
+    <a href="https://pportela1980.github.io/governance-patterns/index.html" target="_blank">Full library</a>
+    <a href="YOUR_NETLIFY_URL" target="_blank" class="nav-cta">Take the diagnostic</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="wrap">
+    <p class="hero-tag">Governance Pattern Language</p>
+    <h1 class="hero-title">When the system that got you here stops being <em>enough</em></h1>
+    <div class="hero-bottom">
+      <p class="hero-body">Most organisations eventually hit moments their systems weren't designed for. The problem is rarely competence or commitment. It's that the environment has changed — but the way people coordinate hasn't.</p>
+      <div class="hero-actions">
+        <a href="YOUR_NETLIFY_URL" target="_blank" class="btn btn-dark">Take the diagnostic</a>
+        <a href="#problem" class="btn btn-ghost">Learn more ↓</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section id="problem">
+  <div class="wrap">
+    <div class="problem-inner">
+      <div>
+        <p class="eyebrow">The problem</p>
+        <h2 class="h2">Familiar responses to <em>unfamiliar</em> conditions</h2>
+      </div>
+      <div>
+        <p class="problem-body">When things start to strain, organisations often respond by adding more structure, bringing in outside solutions, holding more meetings, or avoiding hard decisions until clarity improves.</p>
+        <p class="problem-body">Sometimes these help. Often they don't. They miss a key issue: <strong>the system isn't failing because people don't care — it's failing because collaboration has quietly eroded.</strong></p>
+        <div class="pull-quote">"Governance, at this level, isn't abstract. It's how people coordinate under pressure."</div>
+        <p class="problem-body">What looks like a leadership problem is often a pattern problem. What looks like a communication failure is often a structural one. The patterns have names. And once you can name them, you can begin to change them.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- THRESHOLD MOMENTS -->
+<section id="moments">
+  <div class="wrap">
+    <p class="eyebrow">Threshold moments</p>
+    <h2 class="h2">Transition points — where <em>judgment</em> matters more than rules</h2>
+    <div class="moments-grid">
+      <div class="moment-card"><p>Old assumptions no longer hold</p></div>
+      <div class="moment-card"><p>The next way forward isn't clear yet</p></div>
+      <div class="moment-card"><p>Decisions still have to be made</p></div>
+      <div class="moment-card"><p>The cost of getting it wrong is real</p></div>
+    </div>
+    <p class="moments-coda">These moments aren't crises in the usual sense. They're the moments we work best in — where we can be most useful.</p>
+  </div>
+</section>
+
+<!-- WHAT IT IS -->
+<section id="what">
+  <div class="wrap">
+    <p class="eyebrow">What this is</p>
+    <h2 class="h2">A language for what's <em>already</em> happening</h2>
+    <div class="what-grid">
+      <div class="what-item">
+        <p class="what-num">01</p>
+        <h3>Not a framework. A vocabulary.</h3>
+        <p>Patterns don't prescribe solutions. They name recurring dynamics so you can recognise them in your own system — and choose what to do next.</p>
+      </div>
+      <div class="what-item">
+        <p class="what-num">02</p>
+        <h3>Built from practice, not theory.</h3>
+        <p>These patterns emerged from 8 years of work across philanthropic networks, peacebuilding ecosystems, and social change organisations. They describe what we kept seeing.</p>
+      </div>
+      <div class="what-item">
+        <p class="what-num">03</p>
+        <h3>Blocks and unblocks.</h3>
+        <p>Every block — a pattern that creates problems — has a corresponding unblock: a move that opens possibilities. Naming the problem is the first step. The move is the next.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PATTERNS -->
+<section id="patterns">
+  <div class="wrap">
+    <div class="patterns-header">
+      <div>
+        <p class="eyebrow">The patterns</p>
+        <h2 class="h2">A selection from the <em>library</em></h2>
+      </div>
+      <p class="patterns-intro">The full library contains 41 patterns across 5 themes: Authority, Complexity, Transparency, Adaptability, and Boundaries. What follows is a taste — enough to recognise something. For the complete language, visit the <a href="https://pportela1980.github.io/governance-patterns/index.html" target="_blank">full pattern library →</a></p>
+    </div>
+
+    <p class="theme-label">Authority & Coordination</p>
+    <div class="patterns-grid">
+      <div class="pattern-card">
+        <span class="card-badge block">Block</span>
+        <div class="card-name">The Bottleneck Leader</div>
+        <p class="card-tagline">Centralizing leadership to manage decision overload leads to dependency.</p>
+        <div class="card-detail">Power concentrates in a single leader who "keeps things organized" — which creates stagnation, dependency, and risks burnout or authoritarianism.</div>
+      </div>
+      <div class="pattern-card">
+        <span class="card-badge block">Block</span>
+        <div class="card-name">The Cult of the Founder</div>
+        <p class="card-tagline">Charismatic leadership creates dependency and stifles succession.</p>
+        <div class="card-detail">When groups form around a charismatic leader, power becomes overly concentrated, stifling governance evolution and suppressing succession.</div>
+      </div>
+      <div class="pattern-card">
+        <span class="card-badge unblock">Unblock</span>
+        <div class="card-name">Shared Stewardship</div>
+        <p class="card-tagline">Rotate leadership roles to distribute power and enhance resilience.</p>
+        <div class="card-detail">Rotate leadership roles and share responsibility across the community to distribute power, enhance resilience, and encourage inclusivity.</div>
+      </div>
+    </div>
+
+    <p class="theme-label">Transparency & Participation</p>
+    <div class="patterns-grid">
+      <div class="pattern-card">
+        <span class="card-badge block">Block</span>
+        <div class="card-name">The Black Box Decision</div>
+        <p class="card-tagline">Opaque decision-making erodes trust and excludes affected stakeholders.</p>
+        <div class="card-detail">A drive for efficiency at the expense of openness undermines accountability and inclusiveness.</div>
+      </div>
+      <div class="pattern-card">
+        <span class="card-badge block">Block</span>
+        <div class="card-name">Participation as Performance</div>
+        <p class="card-tagline">Superficial participation creates an illusion of inclusion.</p>
+        <div class="card-detail">Performative participation leads to disengagement and cynicism when genuine influence is lacking.</div>
+      </div>
+      <div class="pattern-card">
+        <span class="card-badge unblock">Unblock</span>
+        <div class="card-name">Making Power Visible</div>
+        <p class="card-tagline">Reveal hidden power dynamics to build trust and clarity.</p>
+        <div class="card-detail">Actively reveal and clarify power structures via transparent role definitions, open decision-making, and visible accountability measures.</div>
+      </div>
+    </div>
+
+    <p class="theme-label">Adaptability & Fitness</p>
+    <div class="patterns-grid">
+      <div class="pattern-card">
+        <span class="card-badge block">Block</span>
+        <div class="card-name">The Fragile Hierarchy</div>
+        <p class="card-tagline">Rigid hierarchies hinder innovation and adaptation.</p>
+        <div class="card-detail">Centralized power stifles innovation and impedes adaptive change when leaders resist dissent.</div>
+      </div>
+      <div class="pattern-card">
+        <span class="card-badge unblock">Unblock</span>
+        <div class="card-name">Accountability as Care</div>
+        <p class="card-tagline">Reframe accountability as a supportive, caring practice.</p>
+        <div class="card-detail">Reframe accountability as an act of care — emphasizing shared values and mutual responsibility — to foster a supportive, growth-oriented environment.</div>
+      </div>
+      <div class="pattern-card">
+        <span class="card-badge unblock">Unblock</span>
+        <div class="card-name">Trust is the Work</div>
+        <p class="card-tagline">Relational work is the foundation of effective governance.</p>
+        <div class="card-detail">Make trust-building an explicit, ongoing practice by dedicating time and resources to relationship cultivation and transparent communication.</div>
+      </div>
+    </div>
+
+    <div class="patterns-cta">
+      <p>Recognise something? The diagnostic interview names what's active in your specific system.</p>
+      <a href="YOUR_NETLIFY_URL" target="_blank" class="btn btn-dark">Take the diagnostic →</a>
+    </div>
+  </div>
+</section>
+
+<!-- DIAGNOSTIC -->
+<section id="diagnostic">
+  <div class="wrap">
+    <div class="diag-wrap">
+      <div>
+        <p class="diag-tag">The diagnostic</p>
+        <h2 class="diag-title">Orientation before action</h2>
+        <p class="diag-sub">The pre-conversation self-check</p>
+        <p class="diag-body">When organisations enter threshold moments, the first need is not structure. It is orientation. The diagnostic is a short, dynamic interview — one question at a time, each shaped by the last — designed to surface what's actually happening before anyone starts moving.</p>
+        <p class="diag-note">"This is not an evaluative audit. It is a practice of shared orientation."</p>
+        <a href="YOUR_NETLIFY_URL" target="_blank" class="btn-white">Begin the diagnostic</a>
+      </div>
+      <div class="diag-steps">
+        <div class="diag-step">
+          <span class="step-n">01</span>
+          <p class="step-body"><strong>Enter your details.</strong> Name, email, organisation. That's all we need to begin.</p>
+        </div>
+        <div class="diag-step">
+          <span class="step-n">02</span>
+          <p class="step-body"><strong>The interview.</strong> 6–9 questions. Each shaped by your previous answer. No scripts, no forms — a real conversation.</p>
+        </div>
+        <div class="diag-step">
+          <span class="step-n">03</span>
+          <p class="step-body"><strong>Your consent.</strong> Before we show you the reading, we ask if you're willing to share it with us. If not, nothing leaves the page.</p>
+        </div>
+        <div class="diag-step">
+          <span class="step-n">04</span>
+          <p class="step-body"><strong>Your reading.</strong> Active blocks named. Moves suggested. A genuine next step offered.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section id="process">
+  <div class="wrap">
+    <p class="eyebrow">Our process</p>
+    <h2 class="h2">A structured <em>inquiry</em> — usually over three months</h2>
+    <div class="process-intro">
+      <p class="body-lg">The diagnostic is the beginning of a larger process. When a team is ready to go deeper, we move through a structured inquiry designed to help them see where coordination is straining, surface where decisions are slowing, and name what is actually preventing movement.</p>
+      <p class="process-coda">"We did not design this from theory. This work emerged from repeated encounters with governance strain across sectors."</p>
+    </div>
+    <div class="process-steps">
+      <div class="process-step">
+        <p class="step-phase">Phase 01</p>
+        <p class="step-title">Pre-conversation self-check</p>
+        <p class="step-desc">A short survey — the diagnostic — to surface early signals, followed by a one-on-one conversation.</p>
+      </div>
+      <div class="process-step">
+        <p class="step-phase">Phase 02</p>
+        <p class="step-title">Narrative inquiry</p>
+        <p class="step-desc">Short stories gathered across roles, focusing on real decision moments. Story as a legitimate data source.</p>
+      </div>
+      <div class="process-step">
+        <p class="step-phase">Phase 03</p>
+        <p class="step-title">Pattern sensing</p>
+        <p class="step-desc">Using the governance pattern language to identify active dynamics across the system.</p>
+      </div>
+      <div class="process-step">
+        <p class="step-phase">Phase 04</p>
+        <p class="step-title">Threshold Gate Brief</p>
+        <p class="step-desc">A facilitated session: What is this moment asking of us? What must change? What should not be rushed?</p>
+      </div>
+    </div>
+    <div class="process-outcomes">
+      <p class="outcomes-label">At the end of the process, a team leaves with</p>
+      <div class="outcomes-list">
+        <div class="outcome-item"><div class="outcome-dot"></div><p class="outcome-text">A shared diagnosis of governance strains</p></div>
+        <div class="outcome-item"><div class="outcome-dot"></div><p class="outcome-text">Clear decisions about what must change</p></div>
+        <div class="outcome-item"><div class="outcome-dot"></div><p class="outcome-text">Agreement on what not to rush</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CASES -->
+<section id="cases">
+  <div class="wrap">
+    <p class="eyebrow">In practice</p>
+    <h2 class="h2">What this looks like in <em>real situations</em></h2>
+    <div class="cases-grid">
+      <div class="case-item">
+        <p class="case-sector">Aerospace Industry</p>
+        <div class="case-body">
+          <p>A programme to develop and certify space hardware involved dozens of subcontractors, each expert in their domain. On paper, coordination was clear — contracts, interfaces, schedules.</p>
+          <p>As complexity increased, that clarity broke down. Decisions that should have been routine required escalation. <strong>Everyone was accountable, but no one was deciding.</strong></p>
+          <p>We focused on re-establishing decision authority where knowledge actually lived, rather than where it had been formally assigned. As authority and expertise were realigned, coordination improved and decision-making accelerated.</p>
+        </div>
+      </div>
+      <div class="case-item">
+        <p class="case-sector">Education</p>
+        <div class="case-body">
+          <p>A senior leader stepped into their role during a period of institutional fragility. Over several years, they built the structures and relationships needed to stabilise the organisation.</p>
+          <p>Eight years later, the system was stronger — <strong>but the leadership approach hadn't shifted.</strong> The leader felt overwhelmed, and key decisions were still routing through them.</p>
+          <p>Working together, we reframed their role — from carrying responsibility to enabling it. Progress depended not on doing more, but on activating a team of enabled minds.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOR WHOM -->
+<section id="forwhom">
+  <div class="wrap">
+    <div class="forwhom-inner">
+      <div>
+        <p class="eyebrow">Who we work with</p>
+        <h2 class="h2">Who we're <em>drawn</em> to work with</h2>
+        <div class="forwhom-closing">
+          <p>We take on a small number of engagements.</p>
+          <p>We are not optimising for speed or scale — but for coherence and relevance.</p>
+          <p>If this feels like your situation, we'd be glad to talk.</p>
+        </div>
+        <a href="mailto:info@systemsandcomplexity.school" class="contact-link">info@systemsandcomplexity.school</a>
+      </div>
+      <div class="forwhom-list">
+        <div class="forwhom-item">
+          <strong>Leaders at a threshold</strong>
+          <p>Where what worked before is no longer enough, but the way forward isn't yet clear.</p>
+        </div>
+        <div class="forwhom-item">
+          <strong>People working across difference</strong>
+          <p>Between teams, disciplines, or sectors — where coordination matters as much as expertise.</p>
+        </div>
+        <div class="forwhom-item">
+          <strong>Those who sense the challenge isn't effort</strong>
+          <p>But how people are seeing, deciding, and acting together.</p>
+        </div>
+        <div class="forwhom-item">
+          <strong>Those willing to pause</strong>
+          <p>Not to delay action — but to move with greater clarity and shared judgment.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHO WE ARE -->
+<section id="who">
+  <div class="wrap">
+    <div class="who-inner">
+      <div>
+        <p class="eyebrow">The stewards</p>
+        <h2 class="h2">We've spent decades working with the kinds of situations <em>you face</em></h2>
+        <p class="who-body">Practical, relational, and grounded in real work. We work alongside people as they deal with real situations — not simulations.</p>
+        <p class="who-body">Our role isn't to replace leadership. It's to support clearer judgment where it matters most.</p>
+        <div style="margin-top:2rem">
+          <a href="YOUR_NETLIFY_URL" target="_blank" class="btn btn-dark">Take the diagnostic</a>
+        </div>
+      </div>
+      <div>
+        <div class="person">
+          <div class="person-name">Pedro Portela</div>
+          <div class="person-role">Co-founder, The Threshold</div>
+          <p class="person-bio">Over 20 years spanning aerospace engineering, conflict transformation, and systems consulting, much of it in high-stakes and institutionally complex environments. Works at the intersection of complexity science, organisational governance, and coordination failure — helping institutions recognise the patterns that make hard problems persist.</p>
+          <p class="person-quote">"What is this system actually doing?" — as a way of exposing the structural causes behind the symptoms everyone else is managing.</p>
+        </div>
+        <div class="person">
+          <div class="person-name">Jason Ferenczi</div>
+          <div class="person-role">Co-founder, The Threshold</div>
+          <p class="person-bio">Over 30 years in nonprofit leadership, philanthropy, and education in cross-cultural and institutionally complex settings. Works at the intersection of organisational dynamics, decision-making, and cultural context — helping leaders surface the patterns shaping their present challenges.</p>
+          <p class="person-quote">"How did we get here?" — as a way of clarifying the way forward.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SSC CREDIT -->
+<section id="ssc">
+  <div class="wrap">
+    <div class="ssc-inner">
+      <p class="ssc-text">The governance pattern language was developed by the <strong>School of Systems & Complexity (SSC)</strong>, co-founded by Pedro.</p>
+      <a href="https://systemsandcomplexity.school" target="_blank" class="ssc-link">Visit SSC →</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="wrap">
+    <div class="footer-inner">
+      <span class="footer-brand">the threshold</span>
+      <span class="footer-copy">we help teams make sense of complexity</span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
